@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const ROCK = "rock";
+        const PAPER = "paper";
+        const SCISSORS = "scissors";
+        const CHOISES = [ROCK, PAPER, SCISSORS];
+
+        let playerScore = 0;
+        let computerScore = 0;
+
+        function getRandomInt(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min) + min);
+        }
+
+        function getComputerChoice() {
+            let randomIndex = getRandomInt(0, CHOISES.length);
+            return CHOISES[randomIndex];
+        }
+
+        function resolveRound(win, playerSelection, computerSelection) {
+            if (win) {
+                playerScore++;
+                return `You win! ${playerSelection} beats ${computerSelection}`;
+            }
+            else {
+                computerScore++;
+                return `You loose! ${playerSelection} looses to ${computerSelection}`;
+            }
+        }
+
+        function playRound(playerSelection, computerSelection) {
+            playerSelection = playerSelection.toString().toLowerCase();
+            if (playerSelection === computerSelection) {
+                return "It's a tie!";
+            }
+
+            switch (playerSelection) {
+                case ROCK:
+                    if (computerSelection === PAPER) {
+                        return resolveRound(false, playerSelection, computerSelection);
+                    }
+                    else if (computerSelection === SCISSORS) {
+                        return resolveRound(true, playerSelection, computerSelection);
+                    }
+                case PAPER: 
+                    if (computerSelection === ROCK) {
+                        return resolveRound(true, playerSelection, computerSelection);
+                    }
+                    else if (computerSelection === SCISSORS) {
+                        return resolveRound(false, playerSelection, computerSelection);
+                    }
+                case SCISSORS:
+                    if (computerSelection === ROCK) {
+                        return resolveRound(false, playerSelection, computerSelection);
+                    }
+                    else if (computerSelection === PAPER) {
+                        return resolveRound(true, playerSelection, computerSelection);
+                    }
+                default:
+                    return `${playerSelection} is not valid choice! Don't be Joey! :)`;
+            }
+        }
+
+        function game() {
+            console.log("The game starts!");
+            for (let i = 0; i < 5; i++) {
+                console.log("Round " + i);
+                let playerSelection = prompt("Enter your choice:");
+                console.log(playRound(playerSelection, getComputerChoice()));
+            }
+        }
+
+        game();
+        console.log(`Player: ${playerScore}`);
+        console.log(`Computer: ${computerScore}`);
+
+    </script>
+</body>
+
+</html>
