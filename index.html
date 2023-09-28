@@ -4,10 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Rock paper scissors</title>
 </head>
 
 <body>
+    <button>Rock</button>
+    <button>Paper</button>
+    <button>Scissors</button>
+    <p class="score"></p>
+    <h3 class="round-result"></h3>
+
+
+
     <script>
         const ROCK = "rock";
         const PAPER = "paper";
@@ -16,6 +24,7 @@
 
         let playerScore = 0;
         let computerScore = 0;
+        let round = 0;
 
         function getRandomInt(min, max) {
             min = Math.ceil(min);
@@ -40,6 +49,11 @@
         }
 
         function playRound(playerSelection, computerSelection) {
+            if(playerScore === 5 || computerScore === 5){
+                return "Game ended!";
+            }
+            round++;
+
             playerSelection = playerSelection.toString().toLowerCase();
             if (playerSelection === computerSelection) {
                 return "It's a tie!";
@@ -53,7 +67,7 @@
                     else if (computerSelection === SCISSORS) {
                         return resolveRound(true, playerSelection, computerSelection);
                     }
-                case PAPER: 
+                case PAPER:
                     if (computerSelection === ROCK) {
                         return resolveRound(true, playerSelection, computerSelection);
                     }
@@ -72,18 +86,25 @@
             }
         }
 
-        function game() {
-            console.log("The game starts!");
-            for (let i = 0; i < 5; i++) {
-                console.log("Round " + i);
-                let playerSelection = prompt("Enter your choice:");
-                console.log(playRound(playerSelection, getComputerChoice()));
-            }
+        function displayGameState(state) {
+            const scoreElement = document.querySelector(".score");
+            scoreElement.innerHTML =
+                `Round: ${round}<br>
+                Player: ${playerScore}<br>
+                Computer: ${computerScore}`;
+            const resultsElement = document.querySelector(".round-result");
+            resultsElement.textContent = state;
         }
 
-        game();
-        console.log(`Player: ${playerScore}`);
-        console.log(`Computer: ${computerScore}`);
+        const btns = document.querySelectorAll("button");
+
+        btns.forEach(btn => {
+            btn.addEventListener("click", () => {
+                let result = playRound(btn.textContent, getComputerChoice());
+                displayGameState(result);
+            });
+        });
+
 
     </script>
 </body>
